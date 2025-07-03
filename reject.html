@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FoodCycle- Requests </title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #eaeaea;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .iphone-frame {
+      width: 430px;
+      height: 932px;
+      background-color: #fdfde9;
+      border: 16px solid #000;
+      border-radius: 60px;
+      padding: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      padding-top: 60px;
+    }
+
+    .notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 210px;
+      height: 30px;
+      background-color: #000;
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+      z-index: 10;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      font-size: 20px;
+    }
+
+    .back-arrow {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .store-info {
+      margin-top: 20px;
+    }
+
+    .store-info p {
+      font-size: 16px;
+      margin: 0;
+    }
+
+    .reason-label {
+      margin-top: 20px;
+      font-size: 16px;
+    }
+
+    select {
+      margin-top: 10px;
+      width: 100%;
+      padding: 15px;
+      border-radius: 12px;
+      background-color: #f9f5a5;
+      border: none;
+      font-size: 16px;
+      color: #555;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,<svg width='16' height='16' viewBox='0 0 20 20' fill='black' xmlns='http://www.w3.org/2000/svg'><polygon points='0,0 20,0 10,10'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 15px center;
+      background-size: 15px;
+    }
+
+    #otherReason {
+      display: none;
+      margin-top: 15px;
+    }
+
+    #otherReason textarea {
+      width: 94%;
+      height: 100px;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      background-color: #eee;
+    }
+
+    .submit-button {
+      margin-top: auto;
+      background-color: #f9f5a5;
+      border: none;
+      padding: 15px;
+      border-radius: 15px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="iphone-frame">
+    <div class="notch"></div>
+
+    <header>
+      <span class="back-arrow" onclick="history.back()">←</span>
+      <span><h2>Requests</h2></span>
+    </header>
+
+    <div class="store-info">
+      <p><strong>Store:</strong> Restoran Bin Abudin, PJS 7/15</p>
+    </div>
+
+    <div class="reason-label">Please state a reason.</div>
+
+    <select id="reasonSelect" onchange="checkReason(this.value)">
+      <option disabled selected>Choose a reason</option>
+      <option>Out of stock</option>
+      <option>Out of operating hours</option>
+      <option value="other">Other</option>
+    </select>
+
+    <div id="otherReason">
+      <textarea placeholder="Enter your reason..."></textarea>
+    </div>
+
+    <button class="submit-button" onclick="submitReason()">Submit</button>
+  </div>
+  <audio id="submitSound" src="https://cdn.pixabay.com/download/audio/2025/05/29/audio_886e7b2c8f.mp3?filename=single-mouse-button-click-351381.mp3" preload="auto"></audio>
+<audio id="errorSound" src="https://cdn.pixabay.com/download/audio/2025/05/29/audio_886e7b2c8f.mp3?filename=single-mouse-button-click-351381.mp3" preload="auto"></audio>
+
+
+  <script>
+    function checkReason(value) {
+      const otherBox = document.getElementById("otherReason");
+      if (value === "other") {
+        otherBox.style.display = "block";
+      } else {
+        otherBox.style.display = "none";
+      }
+    }
+
+function submitReason() {
+  const reasonSelect = document.getElementById("reasonSelect");
+  const reason = reasonSelect.value;
+  const otherText = document.querySelector("#otherReason textarea")?.value;
+
+  if (reasonSelect.selectedIndex === 0) {
+    playSound("errorSound");
+    alert("Please select a reason.");
+    return;
+  }
+
+  if (reason === "other" && (!otherText || otherText.trim() === "")) {
+    playSound("errorSound");
+    alert("Please enter your reason.");
+    return;
+  }
+
+  playSound("submitSound");
+  setTimeout(() => {
+    window.location.href = "rejectednotice.html";
+  }, 300); // delay to allow sound to play
+}
+
+
+  function playSound(id) {
+    const audio = document.getElementById(id);
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play();
+    }
+  }
+  </script>
+</body>
+</html>

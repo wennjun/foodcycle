@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FoodCycle- Active Requests</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #eaeaea;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .iphone-frame {
+      width: 430px;
+      height: 932px;
+      background-color: #fdfde9;
+      border: 16px solid #000;
+      border-radius: 60px;
+      padding: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+      position: relative;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+
+    .notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 210px;
+      height: 30px;
+      background-color: #000;
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+      z-index: 10;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 40px;
+    }
+
+    .back-arrow {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .user-info {
+      background-color: #f9f5a5;
+      padding: 12px 15px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin: 20px 0;
+    }
+
+    .user-info div {
+      font-size: 14px;
+    }
+
+    .user-info b {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .status {
+      color: green;
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-weight: bold;
+      margin: 20px 0 10px;
+      font-size: 16px;
+    }
+
+    .item-box {
+      background-color: #f5f5f5;
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .item-box img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .item-details {
+      font-size: 14px;
+    }
+
+    .special-info-box {
+      background-color: #eeeeee;
+      height: 150px;
+      border-radius: 10px;
+      border: 1px solid #999;
+      margin-top: 10px;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="iphone-frame">
+    <div class="notch"></div>
+
+    <header>
+      <span class="back-arrow" onclick="history.back()">←</span>
+      <h2>Active Requests</h2>
+    </header>
+
+    <div class="user-info">
+      <div>
+        <b>John Doe</b>
+        Nasi Lemak Rendang Chicken x2<br/>
+        +60 12-3853506
+      </div>
+      <div class="status">Pending Pick Up</div>
+    </div>
+
+    <div class="section-title">Items</div>
+    <div class="item-box">
+      <img src="https://www.malaysianchinesekitchen.com/wp-content/uploads/2017/06/NasiLemakBungkus-1.jpg">
+      <div class="item-details">
+        Nasi Lemak x1<br/>
+        Order ID: #2200XDFKI1L
+      </div>
+    </div>
+
+    <div class="section-title">Special Information (Optional)</div>
+    <div class="special-info-box"></div>
+  </div>
+</body>
+</html>
