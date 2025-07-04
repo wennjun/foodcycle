@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FoodCycle- Approved</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #eaeaea;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .iphone-frame {
+      width: 430px;
+      height: 932px;
+      background-color: #fdfde9;
+      border: 16px solid #000;
+      border-radius: 60px;
+      padding: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding-top: 60px;
+      box-sizing: border-box;
+    }
+
+    .notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 210px;
+      height: 30px;
+      background-color: #000;
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+      z-index: 10;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      
+    }
+
+    .back-arrow {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding-bottom: 40px;
+    }
+
+    .content img {
+      width: 130px;
+      height: 130px;
+      margin-bottom: 20px;
+    }
+
+    .content h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .content p {
+      margin-top: 8px;
+      font-size: 16px;
+    }
+
+    .view-button {
+      background-color: #f9f5a5;
+      border: none;
+      padding: 15px;
+      border-radius: 15px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    #loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #fdfde9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.loader-screen {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+  </style>
+</head>
+<body>
+  <div class="iphone-frame">
+    <div class="notch"></div>
+
+    <header>
+      <span class="back-arrow" onclick="history.back()">←</span>
+      <b>Active Requests</b>
+      <audio id="submitSound" src="https://cdn.pixabay.com/download/audio/2025/05/29/audio_886e7b2c8f.mp3?filename=single-mouse-button-click-351381.mp3" preload="auto"></audio>
+
+    </header>
+<div class="content" id="thankYouContent">
+  <img src="https://cdn-icons-png.flaticon.com/512/845/845646.png" alt="Success Icon" />
+  <h2>Thank You</h2>
+  <p>You have approved a request!</p>
+</div>
+    <button class="view-button" onclick="playSoundAndRedirect()">View</button>
+     <div class="loader-screen" id="loadingScreen" style="display: none;">
+  <canvas id="loader" width="100" height="100"></canvas>
+</div>
+
+  </div>
+ 
+  
+
+<script>
+
+window.addEventListener('pageshow', () => {
+  document.getElementById('loadingScreen').style.display = 'none';
+  if (typeof animationFrame !== 'undefined') {
+    cancelAnimationFrame(animationFrame);
+  }
+});
+
+  const submitSound = document.getElementById('submitSound');
+  const loader = document.getElementById("loader");
+  const ctx = loader.getContext("2d");
+
+  const thankYouContent = document.getElementById("thankYouContent");
+  const loadingScreen = document.getElementById("loadingScreen");
+
+  let angle = 0;
+  let animationFrame;
+
+  function drawLoader() {
+    ctx.clearRect(0, 0, loader.width, loader.height);
+    ctx.beginPath();
+    ctx.arc(50, 50, 40, angle, angle + Math.PI * 1.5);
+    ctx.strokeStyle = "#f9f5a5";
+    ctx.lineWidth = 5;
+    ctx.lineCap = "round";
+    ctx.stroke();
+    angle += 0.05;
+    animationFrame = requestAnimationFrame(drawLoader);
+  }
+
+  function playSoundAndRedirect() {
+    submitSound.currentTime = 0;
+    submitSound.play();
+
+    thankYouContent.style.display = "none";     // Hide "Thank You"
+    loadingScreen.style.display = "flex";       // Show loader
+      document.querySelector('.view-button').style.display = 'none'; // Hide View button
+    drawLoader();                               // Start animation
+
+    setTimeout(() => {
+      cancelAnimationFrame(animationFrame);     // Stop animation
+      window.location.href = 'view.html';
+    }, 2000); // 2-second delay
+  }
+</script>
+
+
+
+</body>
+</html>

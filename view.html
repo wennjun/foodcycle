@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FoodCycle- Active Requests</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #eaeaea;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .iphone-frame {
+      width: 430px;
+      height: 932px;
+      background-color: #fdfde9;
+      border: 16px solid #000;
+      border-radius: 60px;
+      padding: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+        box-sizing: border-box;
+        padding-top: 60px;
+    }
+
+    .notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 210px;
+      height: 30px;
+      background-color: #000;
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+      z-index: 10;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+ 
+    }
+
+    .back-arrow {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .store-info {
+      margin: 10px 0 20px;
+    }
+
+    .store-info p {
+      margin: 5px 0;
+      font-size: 16px;
+    }
+
+    .request-card {
+      background-color: #f9f5a5;
+      padding: 12px 15px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 15px;
+    }
+
+    .request-card b {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .status-active {
+      color: green;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    
+    .request-card {
+      text-decoration: none;
+      color: black;
+      cursor: pointer;
+     
+    }
+
+     .back-arrow {
+      text-decoration: none;
+      color: black;
+      font-size: 24px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="iphone-frame">
+    <div class="notch"></div>
+
+    <header>
+      <a href="index.html" class="back-arrow">←</a>
+      <b>Active Requests</b>
+    </header>
+
+    <div class="store-info">
+      <p><strong>Store:</strong> Restoran Bin Abudin, PJS 7/15</p>
+    </div>
+<div class="request-card" onclick="playClickAndRedirect()">
+<audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2025/05/29/audio_886e7b2c8f.mp3?filename=single-mouse-button-click-351381.mp3" preload="auto"></audio>
+          <div>
+        <b>Jonell Duhaylungsod</b>
+        Nasi Lemak Rendang Chicken x2
+      </div>
+      <span class="status-active">Active</span>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  function playClickAndRedirect() {
+    const clickSound = document.getElementById('clickSound');
+    clickSound.currentTime = 0;
+    clickSound.play();
+
+    setTimeout(() => {
+      window.location.href = 'activedetails.html';
+    }, 200); // delay for audio (adjust if needed)
+  }
+</script>
+</html>

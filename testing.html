@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FoodCycle - Requests</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #eaeaea;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .iphone-frame {
+      width: 430px;
+      height: 932px;
+      background-color: #fdfde9;
+      border: 16px solid #000;
+      border-radius: 60px;
+      padding: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding-top: 60px;
+      box-sizing: border-box;
+    }
+
+    .notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 210px;
+      height: 30px;
+      background-color: #000;
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+      z-index: 10;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .store-info p {
+      margin: 5px 0;
+    }
+
+    .order-card {
+      background-color: #f9f5a5;
+      padding: 10px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 15px 0;
+    }
+
+    .status {
+      font-weight: bold;
+    }
+
+    h3 {
+      margin: 15px 0 5px;
+    }
+
+    .item {
+      display: flex;
+      gap: 10px;
+      background-color: #eee;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+    }
+
+    .item img {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    textarea {
+      width: 94%;
+      height: 150px;
+      padding: 10px;
+      resize: none;
+      font-size: 14px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      background-color: #eee;
+      margin-bottom: 20px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: auto;
+    }
+
+    button.approve {
+      background-color: #f9f5a5;
+      border: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button.reject {
+      background-color: #ff5b5b;
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .loader-screen {
+      position: absolute;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 60px);
+      background-color: #fdfde9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+  <div class="iphone-frame">
+    <div class="notch"></div>
+    <header><h2>Requests</h2></header>
+
+    <div class="store-info">
+      <p><strong>Store:</strong> Restoran Bin Abudin, PJS 7/15</p>
+      <p><strong>Receiver:</strong> John Doe</p>
+    </div>
+
+    <div class="order-summary">
+      <div class="order-card">
+        <div class="order-text">
+          <strong>Jonell Duhaylungsod</strong><br />
+          Nasi Lemak Rendang Chicken x2
+        </div>
+        <span class="status">Pending</span>
+      </div>
+    </div>
+
+    <h3>Items</h3>
+    <div class="item">
+      <img src="https://www.malaysianchinesekitchen.com/wp-content/uploads/2017/06/NasiLemakBungkus-1.jpg" alt="Nasi Lemak" />
+      <div class="item-details">
+        <p><strong>Nasi Lemak Rendang Chicken x2</strong></p>
+        <p>Order ID: #2200XDFKI1L</p>
+      </div>
+    </div>
+
+    <h3>Special Information (Optional)</h3>
+    <textarea placeholder="Enter any special instructions"></textarea>
+
+    <div class="buttons">
+      <button class="approve" onclick="handleAction('approve')">Approve</button>
+      <button class="reject" onclick="handleAction('reject')">Reject</button>
+
+      <audio id="approveSound" src="https://cdn.pixabay.com/audio/2025/01/30/audio_4fffd36717.mp3" preload="auto"></audio>
+      <audio id="rejectSound" src="https://cdn.pixabay.com/download/audio/2025/05/29/audio_886e7b2c8f.mp3?filename=single-mouse-button-click-351381.mp3" preload="auto"></audio>
+
+      <div class="loader-screen" id="loadingScreen" style="display: none;">
+        <canvas id="glCanvas" width="200" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const approveSound = document.getElementById('approveSound');
+    const rejectSound = document.getElementById('rejectSound');
+    const loadingScreen = document.getElementById('loadingScreen');
+    const canvas = document.getElementById('glCanvas');
+    const gl = canvas.getContext('webgl');
+
+    function handleAction(type) {
+      const sound = type === 'approve' ? approveSound : rejectSound;
+      sound.currentTime = 0;
+      sound.play();
+      loadingScreen.style.display = 'flex';
+      startBouncingBall();
+      setTimeout(() => {
+        window.location.href = type === 'approve' ? 'approved.html' : 'reject.html';
+      }, 2000);
+    }
+
+    function startBouncingBall() {
+      if (!gl) return;
+
+      const vsSource = `
+        attribute vec2 aPosition;
+        uniform float uYOffset;
+        void main() {
+          gl_Position = vec4(aPosition.x, aPosition.y + uYOffset, 0.0, 1.0);
+        }
+      `;
+
+      const fsSource = `
+        void main() {
+          gl_FragColor = vec4(0.2, 0.6, 1.0, 1.0);
+        }
+      `;
+
+      function loadShader(type, source) {
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        return shader;
+      }
+
+      const vertexShader = loadShader(gl.VERTEX_SHADER, vsSource);
+      const fragmentShader = loadShader(gl.FRAGMENT_SHADER, fsSource);
+
+      const shaderProgram = gl.createProgram();
+      gl.attachShader(shaderProgram, vertexShader);
+      gl.attachShader(shaderProgram, fragmentShader);
+      gl.linkProgram(shaderProgram);
+      gl.useProgram(shaderProgram);
+
+      function createCircleVertices(radius, segments) {
+        const vertices = [0, 0];
+        for (let i = 0; i <= segments; i++) {
+          const angle = (i / segments) * Math.PI * 2;
+          vertices.push(Math.cos(angle) * radius);
+          vertices.push(Math.sin(angle) * radius);
+        }
+        return new Float32Array(vertices);
+      }
+
+      const vertices = createCircleVertices(0.3, 50);
+      const buffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+      const aPosition = gl.getAttribLocation(shaderProgram, "aPosition");
+      gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
+      gl.enableVertexAttribArray(aPosition);
+
+      const uYOffset = gl.getUniformLocation(shaderProgram, "uYOffset");
+
+      function animateBall(time) {
+        const bounce = Math.sin(time * 0.005) * 0.4;
+        gl.clearColor(0.95, 0.95, 0.95, 1);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+        gl.useProgram(shaderProgram);
+        gl.uniform1f(uYOffset, bounce);
+        gl.drawArrays(gl.TRIANGLE_FAN, 0, vertices.length / 2);
+
+        requestAnimationFrame(animateBall);
+      }
+
+      animateBall(0);
+    }
+  </script>
+</body>
+</html>
